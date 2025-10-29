@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class AlbumTrack{
+    -album : string
+    -annee : int
+    -numPiste : int
+}
+class AudioTrack {
+    -titre : string
+    -auteur : string
+    -genre : string
+    -nomFichier : string
+    -duree : int
+    -id : int
+}
+class PodcastTrack{
+    -date : string
+}
+
+PodcastTrack --|> AudioTrack
+AlbumTrack --|> AudioTrack
+
+
+
+
+
+@enduml
