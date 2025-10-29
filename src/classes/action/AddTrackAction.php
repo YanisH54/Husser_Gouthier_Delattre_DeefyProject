@@ -34,7 +34,7 @@ class AddTrackAction extends ActionConnecte {
                     <br>
                     <p>Date du podcast <input type='text' name='date_podcast'></p>
                     <br>
-                    <p>Créer un album <input type="radio" id="ALBUM" name="type" value="Album"></p>
+                    <p>Créer un album <input type="radio" id="ALBUM" name="type" value="Album" checked></p>
                     <p>Créer un podcast <input type="radio" id="PODCAST" name="type" value="Podcast"></p>
                     <p><button type='submit' name='bouton'>Valider</button></p>
                 END;
