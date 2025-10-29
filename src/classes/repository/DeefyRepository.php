@@ -132,12 +132,12 @@ class DeefyRepository
 
 
     public function verifieEmailExiste(string $email) : bool {
-        $requete = "SELECT count(*) FROM user WHERE email = ?";
+        $requete = "SELECT count(*) FROM user WHERE email = ?;";
         $statm = $this->pdo->prepare($requete);
         $statm->bindParam(1, $email);
         $statm->execute();
-        $nbr = $statm->fetch();
-        return ($nbr === 1);
+        $nbr = $statm->fetch()[0];
+        return ($nbr !== 0);
     }
 
     public function findPlaylistById(int $n) : Playlist{
@@ -191,6 +191,14 @@ class DeefyRepository
         $statm->execute();
         $n = $statm->fetch()[0];
         return ($n === 1);
+    }
+
+    public function registerNewUser(string $email,string $passwd) : void {
+        $requete = "INSERT INTO User (email, passwd, role) values (?, ?, 1);";
+        $statm = $this->pdo->prepare($requete);
+        $statm->bindParam(1,$email);
+        $statm->bindParam(2,$passwd);
+        $statm->execute();
     }
 
 

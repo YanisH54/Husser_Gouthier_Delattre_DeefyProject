@@ -11,7 +11,7 @@ class AddUserAction extends Action
     public function GET(): string
     {
         return <<<END
-            <form method='post' action=?action='add-user'>
+            <form method='post' action=?action=add-user>
             Email : <input type='text' name='email'><br>
             Mot de passe : <input type='text' name='password'><br>
             <button type='submit'>Valider</button></form>
@@ -20,7 +20,6 @@ class AddUserAction extends Action
 
     public function POST(): string
     {
-        $html = null;
         $email = $_POST['email'];
         $password = $_POST['password'];
         try {
@@ -30,10 +29,10 @@ class AddUserAction extends Action
 
             $html ="<b>" .$e->getMessage() . "</b>";
             $html .= <<<END
-                 <form method='post' action=?action='add-user'>
-                 <input type='text' name='email' value='Email'>
-                 <input type='text' name='password' value='Mot de passe'>
-                 <button type='submit'></button></form>
+                    <form method='post' action=?action=add-user>
+                    Email : <input type='text' name='email'><br>
+                    Mot de passe : <input type='text' name='password'><br>
+                    <button type='submit'>Valider</button></form>
                  END;
         }
         return $html;

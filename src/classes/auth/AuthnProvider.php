@@ -30,7 +30,9 @@ class AuthnProvider
             throw new AuthException("Erreur : Email déja enregistré");
         }
         $hash = password_hash($pass, PASSWORD_DEFAULT, ['cost'=>12]);
-        $statm = "insert into User (email, passwd, role) values($email, $hash, 1)";
+        $bdd->registerNewUser($email,$hash);
+
+
 
     }
 
