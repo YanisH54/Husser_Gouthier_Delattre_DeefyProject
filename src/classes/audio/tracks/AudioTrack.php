@@ -28,7 +28,7 @@ class AudioTrack {
     }
 
     public function __GET(string $attribut) {
-        if ( property_exists ($this, $attribut) )
+        if (property_exists ($this, $attribut) )
             return $this->$attribut;
         else
             throw new InvalidPropertyNameException();

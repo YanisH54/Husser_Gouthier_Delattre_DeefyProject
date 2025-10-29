@@ -30,10 +30,11 @@ class AddPlaylistAction extends ActionConnecte {
                     END;
         } else {
             $pl = new Playlist($nom);
-            $_SESSION['playlist'] = serialize($pl);
+
             $pdo = DeefyRepository::getInstance();
             $pdo->sauvegarderNouvellePlaylist($pl);
             $pdo->saveUserPlaylist(AuthnProvider::getSignedInUser(),$pl->__GET("id"));
+            $_SESSION['playlist'] = serialize($pl);
             $html = <<<END
                     <b>Playlist créé en session</b><br>
                     <a href="?action=add-track">Ajouter une piste à la playlist</a>

@@ -40,7 +40,8 @@ class DeefyRepository
         $requete = "SELECT id FROM user WHERE email = ?;";
         $statm = $this->pdo->prepare($requete);
         $statm->bindParam(1,$email);
-        $idUser = $statm->fetch()[0]; //TODO Probleme sur ce fetch/requete
+        $statm->execute();
+        $idUser = $statm->fetch()[0];
 
         $requete = "SELECT id_pl FROM user2playlist WHERE id_user = ?";
         $statm = $this->pdo->prepare($requete);
@@ -73,18 +74,25 @@ class DeefyRepository
             $album = $track->__GET("album");
             $annee = $track->__GET("annee");
             $numPiste = $track->__GET("annee");
-            $statm = $this->pdo->prepare("INSERT INTO 'track' ('titre','filename','duree','genre','artiste_album','titre_album','annee_album','num_album') VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $statm = $this->pdo->prepare("INSERT INTO track (titre,filename,duree,genre,artiste_album,titre_album,annee_album,num_album,type) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?);");
             $statm->bindParam(5, $album);
             $statm->bindParam(6, $auteur);
             $statm->bindParam(7, $annee);
             $statm->bindParam(8, $numPiste);
-        } catch (InvalidPropertyNameException){}
-        try {
-            $date = $track->__GET("date");
-            $statm = $this->pdo->prepare("INSERT INTO 'track' ('titre','filename','duree','genre','auteur_podcast','date_podcast') VALUES (?, ?, ?, ?, ?, ?)");
+            $type = "A";
+            $statm->bindParam(9,$type);
+        } catch (InvalidPropertyNameException){
+            try {
+                $date = $track->__GET("date");
+            $statm = $this->pdo->prepare("INSERT INTO track (titre,filename,duree,genre,auteur_podcast,date_posdcast,type) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $statm->bindParam(5,$auteur);
             $statm->bindParam(6,$date);
+            $type = "P";
+            $statm->bindParam(7,$type);
+
         } catch (InvalidPropertyNameException){}
+        }
+
 
         $statm->bindParam(1,$titre);
         $statm->bindParam(2,$nomFichier);
@@ -114,7 +122,7 @@ class DeefyRepository
 
     public function getUserInfo(string $email) : mixed
     {
-        $requete = "SELECT passwd, role, id FROM user WHERE email = ?";
+        $requete = "SELECT passwd, role, id FROM user WHERE email = ?;";
         $statm = $this->pdo->prepare($requete);
         $statm->bindParam(1, $email);
         $statm->execute();
@@ -137,7 +145,7 @@ class DeefyRepository
         $statm = $this->pdo->prepare($requete);
         $statm->bindParam(1,$n);
         $statm->execute();
-        $nom = $statm->fetch();
+        $nom = $statm->fetch()[0];
         if (!$nom)
             throw new InvalidPropertyValueException("Erreur : Playlist inexistante");
         $playlist = new Playlist($nom,[],$n);
@@ -181,7 +189,7 @@ class DeefyRepository
         $statm->bindParam(1,$user);
         $statm->bindParam(2,$idplaylist);
         $statm->execute();
-        $n = $statm->fetch();
+        $n = $statm->fetch()[0];
         return ($n === 1);
     }
 

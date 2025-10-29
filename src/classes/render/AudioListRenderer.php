@@ -5,6 +5,8 @@ namespace iutnc\deefy\render;
 
 
 use iutnc\deefy\audio\lists\AudioList;
+use iutnc\deefy\audio\tracks\AlbumTrack;
+use iutnc\deefy\audio\tracks\AudioTrack;
 
 class AudioListRenderer implements Renderer
 {
@@ -16,9 +18,9 @@ class AudioListRenderer implements Renderer
 
     function render(int $selecteur): string
     {
-        $affichage = "<p>Nom playlist :".$this->al->__GET('titre')."</p>";
+        $affichage = "<p>Nom playlist :".$this->al->__GET('nom')."</p>";
         foreach ($this->al->__GET("tabPistes") as $audioTrack){
-            if ($audioTrack->__GET("album"))
+            if ($audioTrack instanceof AlbumTrack)
                 $renderer = new AlbumTrackRenderer($audioTrack);
             else
                 $renderer = new PodcastTrackRenderer($audioTrack);

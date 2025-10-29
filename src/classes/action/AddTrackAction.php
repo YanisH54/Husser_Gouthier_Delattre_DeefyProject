@@ -12,36 +12,6 @@ use iutnc\deefy\repository\DeefyRepository;
 
 class AddTrackAction extends ActionConnecte {
 
-    public function execute() : string{
-        if (! isset ($_SESSION['playlist'])){
-            $html = "<b>Aucune playlist en session</b>";
-        } else {
-
-            if ($this->http_method === "GET"){
-
-
-            } else if ($this->http_method === "POST"){
-
-                $nom = filter_var($_POST['nom'], FILTER_SANITIZE_SPECIAL_CHARS);
-                $chemin = filter_var($_POST['chemin'], FILTER_SANITIZE_URL);
-                $artiste = filter_var($_POST['artiste'], FILTER_SANITIZE_SPECIAL_CHARS);
-                $num = filter_var($_POST['num'], FILTER_SANITIZE_NUMBER_INT);
-                $p = new PodcastTrack($nom, []);
-                $_SESSION['playlist'] = serialize($p);
-                $html = "<br><b>Podcast ajouté à la playlist</b>";
-                $renderer = new PodcastTrackRenderer($p);
-                $html .= $renderer->render(1);
-                $html .='<a href="?action=add-track">Ajouter encore une piste</a>';
-                $filter = filter_var($nom, FILTER_SANITIZE_SPECIAL_CHARS);
-
-            }
-            $playlist = unserialize($_SESSION(['playlist']));
-            $playlist->ajouterPiste(new AudioTrack("Piste 1","nom fichier","artiste",4));
-            $_SESSION['playlist'] = serialize($playlist);
-            $html = "<br><b>Track ajoutée à la playlist</b>";
-        }
-        return $html;
-    }
 
     public function GET(): string
     {
@@ -52,18 +22,21 @@ class AddTrackAction extends ActionConnecte {
             if (Authz::checkPlaylistCurrOwner($playlist->__GET("id"))) {
                 $html = <<<END
                     <form method='POST' action='?action=add-track'><br>
-                    <input type='text' name='titre' value="Nom de la piste"><br>
-                    <input type='text' name='filename' value='Chemin du fichier'><br>
-                    <input type='text' name='artiste' value='Nom artiste'><br>
-                    <input type='text' name='numero_album' value='Numero Track'><br>
-                    <input type='text' name='duree'><br>
-                    <input type='text' name='genre'><br>
-                    <input type='text' name='titre_album'><br>
-                    <input type='text' name='annee'><br>
-                    <input type='text' name='date_podcast'><br>
-                    <input type="radio" id="ALBUM" name="type" value="Album">
-                    <input type="radio" id="PODCAST" name="type" value="Podcast">
-                    <button type='submit' name='bouton'>Valider</button>
+                    <p>Nom de la piste <input type='text' name='titre'></p>
+                    <p>Chemin du fichier <input type='text' name='filename'></p>
+                    <p>Nom artiste <input type='text' name='artiste'></p>
+                    <p>Duree <input type='text' name='duree'></p>
+                    <p>Genre <input type='text' name='genre'></p>
+                    <br>
+                    <p>Numero album <input type='text' name='numero_album'></p>
+                    <p>Titre album <input type='text' name='titre_album'></p>
+                    <p>Annee de sortie de l'album <input type='text' name='annee'></p>
+                    <br>
+                    <p>Date du podcast <input type='text' name='date_podcast'></p>
+                    <br>
+                    <p>Créer un album <input type="radio" id="ALBUM" name="type" value="Album"></p>
+                    <p>Créer un podcast <input type="radio" id="PODCAST" name="type" value="Podcast"></p>
+                    <p><button type='submit' name='bouton'>Valider</button></p>
                 END;
             } else {
                 $html = "<b>Accès à la playlist courante refusé</b>";
