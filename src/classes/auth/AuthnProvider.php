@@ -10,7 +10,10 @@ class AuthnProvider
     public static function signin(string $email,
                                   string $passwd2check): void {
         $bdd = DeefyRepository::getInstance();
-        $hash = $bdd->getUserInfo($email)[0];
+        $tab = $bdd->getUserInfo($email);
+        if (!$tab)
+            throw new AuthException("Auth error : invalid credentials");
+        $hash = $tab[0];
         if (!$hash ||!password_verify($passwd2check, $hash))
             throw new AuthException("Auth error : invalid credentials");
         $_SESSION['user'] = serialize($email);

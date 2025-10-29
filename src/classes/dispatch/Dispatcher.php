@@ -9,6 +9,8 @@ use iutnc\deefy\action\DefaultAction;
 use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\PlaylistsAction;
 use iutnc\deefy\action\SignInAction;
+use iutnc\deefy\auth\AuthnProvider;
+use iutnc\deefy\auth\Authz;
 
 class Dispatcher {
     private string $action;
@@ -30,6 +32,9 @@ class Dispatcher {
         $html = $a->execute();
         if ($this->action !== "default"){
             $html .= "<br><p><a href='?action=default'>Retourner à l'accueil</a></p>";
+        }
+        if (isset($_SESSION['user'])){
+            $html = "<p>Connecté en tant que ".AuthnProvider::getSignedInUser()."</p>".$html;
         }
         $this->renderPage($html);
     }

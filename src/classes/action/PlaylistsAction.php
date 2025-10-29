@@ -24,17 +24,20 @@ class PlaylistsAction extends ActionConnecte
     public function POST(): string
     {
         $idPlaylist = $_GET['playlist'];
-
         if (filter_var($idPlaylist,FILTER_SANITIZE_NUMBER_INT))
             $html = "<b>Erreur : identifiant playlist invalide</b>";
         else {
-            if (Authz::checkPlaylistCurrOwner($idPlaylist))
-            $pdo = DeefyRepository::getInstance();
-            try {
-                $playlist = $pdo->findPlaylistById($idPlaylist);
+            if (Authz::checkPlaylistCurrOwner($idPlaylist)) {
+                $pdo = DeefyRepository::getInstance();
+                try {
+                    $playlist = $pdo->findPlaylistById($idPlaylist);
+                    $_SESSION['playlist'] = serialize($playlist);
+                    $nouvAction = new DisplayPlaylistAction();
+                    $html = $nouvAction->execute();
 
-            } catch (InvalidPropertyValueException $e) {
-                $html = "<b>Erreur : playlist introuvable</b>";
+                } catch (InvalidPropertyValueException) {
+                    $html = "<b>Erreur : playlist introuvable</b>";
+                }
             }
         }
 

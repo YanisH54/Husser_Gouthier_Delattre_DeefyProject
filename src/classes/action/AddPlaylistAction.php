@@ -15,7 +15,7 @@ class AddPlaylistAction extends ActionConnecte {
         return <<<END
                 <form method='post' action=?action=add-playlist><br>
                 Nom de la playlist : <input type='text' name='nom'><br>
-                <button type="submit">Valider</button> </form>";
+                <button type="submit">Valider</button> </form>
         END;
 
     }
@@ -35,7 +35,7 @@ class AddPlaylistAction extends ActionConnecte {
             $pdo->sauvegarderNouvellePlaylist($pl);
             $pdo->saveUserPlaylist(AuthnProvider::getSignedInUser(),$pl->__GET("id"));
             $html = <<<END
-                    <b>Playlist créé en session</b><br>";
+                    <b>Playlist créé en session</b><br>
                     <a href="?action=add-track">Ajouter une piste à la playlist</a>
                     END;
         }

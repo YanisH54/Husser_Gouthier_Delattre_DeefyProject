@@ -12,7 +12,7 @@ class SignInAction extends Action
     public function GET(): string
     {
         return <<<END
-            <form method='post' action=?action='sign-in'>
+            <form method='post' action=?action=sign-in>
             Email : <input type='text' name='email'><br>
             Mot de passe : <input type='text' name='password'><br>
             <button type='submit'>Valider</button></form>
@@ -29,8 +29,8 @@ class SignInAction extends Action
         } catch (AuthException $e){
             $html = "<b>" .$e->getMessage() . "</b>";
             $html .= <<<END
-                <form method='post' action=?action='sign-in'>
-                Email : <input type='text' name='email' value='Email'><br>
+                <form method='post' action=?action=sign-in>
+                Email : <input type='text' name='email'><br>
                 Mot de passe : <input type='text' name='password'><br>
                 <button type='submit'>Valider</button></form>
                 END;

@@ -20,6 +20,7 @@ class DeefyRepository
         $this->pdo = new PDO($conf['dsn'], $conf['user'], $conf['pass'],
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
+
     public static function getInstance() : DeefyRepository{
         if (is_null(self::$instance)) {
             self::$instance = new DeefyRepository(self::$config);
@@ -36,10 +37,10 @@ class DeefyRepository
     }
 
     function getListPlaylists(string $email) : array {
-        $requete = "SELECT id FROM user WHERE email = ?";
+        $requete = "SELECT id FROM user WHERE email = ?;";
         $statm = $this->pdo->prepare($requete);
         $statm->bindParam(1,$email);
-        $idUser = $statm->fetch()[0];
+        $idUser = $statm->fetch()[0]; //TODO Probleme sur ce fetch/requete
 
         $requete = "SELECT id_pl FROM user2playlist WHERE id_user = ?";
         $statm = $this->pdo->prepare($requete);
@@ -55,7 +56,7 @@ class DeefyRepository
 
     function sauvegarderNouvellePlaylist(Playlist $playlist) : void {
         $var = $playlist->__GET("nom");
-        $statm1 = $this->pdo->prepare("INSERT INTO playlist (nom) VALUES ?");
+        $statm1 = $this->pdo->prepare("INSERT INTO playlist (nom) VALUES (?);");
         $statm1->bindParam(1, $var);
         $statm1->execute();
         $playlist->setId($this->pdo->lastInsertId());
