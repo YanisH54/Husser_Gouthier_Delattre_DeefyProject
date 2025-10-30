@@ -78,10 +78,10 @@ class Dispatcher {
                     <h2>Menu principal</h2>
                     <ul>
                         <li><a href="?action=default">Accueil</a></li>
-                        <li><a href="?action=add-playlist">Créer une playlist</a></li>
+                        <li><a href="?action=add-playlist">Créer une playlist vide</a></li>
                         <li><a href="?action=add-track">Ajouter une piste</a></li>
-                        <li><a href="?action=playlists">Afficher toutes les playlists</a></li>
-                        <li><a href="?action=display-playlist">Afficher une playlist</a></li>
+                        <li><a href="?action=playlists">mes playlists</a></li>
+                        <li><a href="?action=display-playlist">Afficher la playlist courante</a></li>
                     </ul>
             
                     <hr>
