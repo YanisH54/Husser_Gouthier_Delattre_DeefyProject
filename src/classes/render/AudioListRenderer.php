@@ -6,7 +6,6 @@ namespace iutnc\deefy\render;
 
 use iutnc\deefy\audio\lists\AudioList;
 use iutnc\deefy\audio\tracks\AlbumTrack;
-use iutnc\deefy\audio\tracks\AudioTrack;
 
 class AudioListRenderer implements Renderer
 {

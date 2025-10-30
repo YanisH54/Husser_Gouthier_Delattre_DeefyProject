@@ -6,7 +6,6 @@ use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\audio\tracks\AudioTrack;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 use iutnc\deefy\auth\Authz;
-use iutnc\deefy\render\PodcastTrackRenderer;
 use iutnc\deefy\repository\DeefyRepository;
 
 

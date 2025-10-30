@@ -4,7 +4,6 @@ namespace iutnc\deefy\action;
 
 use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\auth\Authz;
 use iutnc\deefy\repository\DeefyRepository;
 
 class AddPlaylistAction extends ActionConnecte {

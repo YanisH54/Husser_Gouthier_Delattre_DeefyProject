@@ -10,7 +10,6 @@ use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\PlaylistsAction;
 use iutnc\deefy\action\SignInAction;
 use iutnc\deefy\auth\AuthnProvider;
-use iutnc\deefy\auth\Authz;
 
 class Dispatcher {
     private string $action;
