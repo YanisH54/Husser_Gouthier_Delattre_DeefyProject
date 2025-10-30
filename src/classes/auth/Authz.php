@@ -5,8 +5,7 @@ namespace iutnc\deefy\auth;
 use iutnc\deefy\exception\AuthException;
 use iutnc\deefy\repository\DeefyRepository;
 
-class Authz
-{
+class Authz{
 
     public static function checkRole(int $n) : bool {
 

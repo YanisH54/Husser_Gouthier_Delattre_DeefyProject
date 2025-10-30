@@ -6,7 +6,7 @@ use iutnc\deefy\repository\DeefyRepository;
 
 require_once "vendor/autoload.php";
 
-DeefyRepository::setConfig("db.conf");
+DeefyRepository::setConfig(__DIR__ . '/config/db.ini');
 
 $dispatcher = new Dispatcher();
 $dispatcher->run();

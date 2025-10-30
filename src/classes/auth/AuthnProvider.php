@@ -7,8 +7,7 @@ use iutnc\deefy\repository\DeefyRepository;
 
 class AuthnProvider
 {
-    public static function signin(string $email,
-                                  string $passwd2check): void {
+    public static function signin(string $email, string $passwd2check): void {
         $bdd = DeefyRepository::getInstance();
         $tab = $bdd->getUserInfo($email);
         if (!$tab)
@@ -19,8 +18,7 @@ class AuthnProvider
         $_SESSION['user'] = serialize($email);
 
     }
-    public static function register( string $email,
-                                     string $pass): void {
+    public static function register( string $email, string $pass): void {
         if (! filter_var($email, FILTER_VALIDATE_EMAIL))
             throw new AuthException("error : Email incorrect");
         if (strlen($pass) < 10)
@@ -31,8 +29,6 @@ class AuthnProvider
         }
         $hash = password_hash($pass, PASSWORD_DEFAULT, ['cost'=>12]);
         $bdd->registerNewUser($email,$hash);
-
-
 
     }
 

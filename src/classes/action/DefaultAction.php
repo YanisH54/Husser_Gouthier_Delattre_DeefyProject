@@ -4,22 +4,15 @@ namespace iutnc\deefy\action;
 
 class DefaultAction extends Action {
 
-    public function GET() : string{
-        return <<<END
-            <br>Bienvenue !</br>
-            <nav>
-            <a href="?action=add-user">Créer un compte</a>
-            <a href="?action=sign-in">Se connecter</a>
-            <a href="?action=playlists">Voir mes playlist</a>
-            <a href="?action=add-playlist">Créer une playlist</a>
-            <a href="?action=add-track">Ajouter une piste</a>
-            <a href="?action=display-playlist">Afficher la playlist récente</a>
-            </nav>
-            END;
+    public function GET(): string {
+        return <<<HTML
+            <h2>Bienvenue sur Deefy</h2>
+            <p>Deefy est une application qui vous permet de créer, organiser et écouter vos playlists musicales.</p>
+            <p>Utilisez le menu pour accéder aux différentes fonctionnalités.</p>
+        HTML;
     }
 
-    public function POST(): string
-    {
+    public function POST(): string {
         return $this->GET();
     }
 }
