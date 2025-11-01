@@ -27,6 +27,7 @@ class DeefyRepository
         }
         return self::$instance;
     }
+
     public static function setConfig(string $file) : void{
         $conf = parse_ini_file($file);
         if ($conf === false) {
@@ -36,6 +37,13 @@ class DeefyRepository
         self::$config = [ 'dsn'=> $dsn,'user'=> $conf['username'],'pass'=> $conf['password']];
     }
 
+    /**
+     * Renvoit la liste des playlists d'un utilisateur donné
+     * @param string $email
+     * @return array
+     * @throws InvalidPropertyValueException
+     *
+     */
     function getListPlaylists(string $email) : array {
         $requete = "SELECT id FROM user WHERE email = ?;";
         $statm = $this->pdo->prepare($requete);
@@ -55,6 +63,12 @@ class DeefyRepository
         return $liste;
     }
 
+    /**
+     * Ajoute une nouvelle playlist dans la base de données
+     * @param Playlist $playlist
+     * @return void
+     * @throws InvalidPropertyNameException
+     */
     function sauvegarderNouvellePlaylist(Playlist $playlist) : void {
         $var = $playlist->__GET("nom");
         $statm1 = $this->pdo->prepare("INSERT INTO playlist (nom) VALUES (?);");
@@ -62,6 +76,13 @@ class DeefyRepository
         $statm1->execute();
         $playlist->setId($this->pdo->lastInsertId());
     }
+
+    /**
+     * Ajoute une nouvelle track à la base de données
+     * @param AudioTrack $track
+     * @return void
+     * @throws InvalidPropertyNameException
+     */
 
     public function sauvegarderNouvellePiste(AudioTrack $track) : void{
         $statm = $this->pdo->prepare("INSERT INTO 'track' ('titre','filename','duree','genre',) VALUES (?, ?, ?, ?)");
@@ -71,6 +92,7 @@ class DeefyRepository
         $genre = $track->__GET("genre");
         $auteur = $track->__GET("auteur");
         try {
+            // Cas d'ajout d'une piste d'album
             $album = $track->__GET("album");
             $annee = $track->__GET("annee");
             $numPiste = $track->__GET("annee");
@@ -83,17 +105,16 @@ class DeefyRepository
             $statm->bindParam(9,$type);
         } catch (InvalidPropertyNameException){
             try {
+                // Cas d'ajout d'un podcast
                 $date = $track->__GET("date");
-            $statm = $this->pdo->prepare("INSERT INTO track (titre,filename,duree,genre,auteur_podcast,date_posdcast,type) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $statm->bindParam(5,$auteur);
-            $statm->bindParam(6,$date);
-            $type = "P";
-            $statm->bindParam(7,$type);
+                $statm = $this->pdo->prepare("INSERT INTO track (titre,filename,duree,genre,auteur_podcast,date_posdcast,type) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $statm->bindParam(5,$auteur);
+                $statm->bindParam(6,$date);
+                $type = "P";
+                $statm->bindParam(7,$type);
 
-        } catch (InvalidPropertyNameException){}
+            } catch (InvalidPropertyNameException){}
         }
-
-
         $statm->bindParam(1,$titre);
         $statm->bindParam(2,$nomFichier);
         $statm->bindParam(3,$duree);
@@ -103,6 +124,12 @@ class DeefyRepository
         $track->setId($this->pdo->lastInsertId());
     }
 
+    /**
+     * Créé un lien entre une piste et une playlist
+     * @param int $idPlaylist
+     * @param int $idAudioList
+     * @return void
+     */
     public function savePisteExistante(int $idPlaylist, int $idAudioList) : void{
         $requete = "INSERT INTO playlist2track (id_pl,id_track) VALUES (?, ?)";
         $statm = $this->pdo->prepare($requete);
@@ -111,6 +138,12 @@ class DeefyRepository
         $statm->execute();
     }
 
+    /**
+     * Créé un lien ente une playlist et un utilisateur
+     * @param string $email
+     * @param int $idPlaylist
+     * @return void
+     */
     public function saveUserPlaylist(string $email,int $idPlaylist){
         $idUser = $this->getUserInfo($email)[2];
         $requete = "INSERT INTO user2playlist VALUES (?, ?)";
@@ -120,6 +153,11 @@ class DeefyRepository
         $statm->execute();
     }
 
+    /**
+     * Obtient les informations d'un utilisateur de la base de donnée
+     * @param string $email
+     * @return mixed
+     */
     public function getUserInfo(string $email) : mixed
     {
         $requete = "SELECT passwd, role, id FROM user WHERE email = ?;";
@@ -129,8 +167,11 @@ class DeefyRepository
         return $statm->fetch();
     }
 
-
-
+    /**
+     * Verifie si une email est déja présente dans la base de donnée
+     * @param string $email
+     * @return bool
+     */
     public function verifieEmailExiste(string $email) : bool {
         $requete = "SELECT count(*) FROM user WHERE email = ?;";
         $statm = $this->pdo->prepare($requete);
@@ -140,6 +181,12 @@ class DeefyRepository
         return ($nbr !== 0);
     }
 
+    /**
+     * Renvoie la playlist associé à une ID
+     * @param int $n
+     * @return Playlist
+     * @throws InvalidPropertyValueException
+     */
     public function findPlaylistById(int $n) : Playlist{
         $requete = "SELECT nom FROM playlist WHERE id = ?";
         $statm = $this->pdo->prepare($requete);
@@ -178,6 +225,12 @@ class DeefyRepository
         return $playlist;
     }
 
+    /**
+     * Vérifie si une playlist appartient à un utilisateur
+     * @param string $user
+     * @param int $idplaylist
+     * @return bool
+     */
     public function checkPlaylistOwner(string $user, int $idplaylist) : bool {
         $requete = <<<END
             SELECT count(*) FROM user
@@ -193,6 +246,12 @@ class DeefyRepository
         return ($n === 1);
     }
 
+    /**
+     * Enregistre un nouvel utilisateur dans la base de données
+     * @param string $email
+     * @param string $passwd
+     * @return void
+     */
     public function registerNewUser(string $email,string $passwd) : void {
         $requete = "INSERT INTO User (email, passwd, role) values (?, ?, 1);";
         $statm = $this->pdo->prepare($requete);
@@ -200,7 +259,5 @@ class DeefyRepository
         $statm->bindParam(2,$passwd);
         $statm->execute();
     }
-
-
 
 }

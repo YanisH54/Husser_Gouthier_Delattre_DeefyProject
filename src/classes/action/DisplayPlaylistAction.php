@@ -21,7 +21,7 @@ class DisplayPlaylistAction extends ActionConnecte {
                 $html = $renderer->render(Renderer::COMPACT);
             }
             else {
-                $html = "Erreur : Accès à cette playlist refusé";
+                $html = "<b>Erreur : Accès à cette playlist refusé</b>";
             }
         }
         return $html;

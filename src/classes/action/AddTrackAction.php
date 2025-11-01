@@ -75,6 +75,7 @@ class AddTrackAction extends ActionConnecte {
                     $html = "<b>Erreur de saisie, veuillez réessayer</b>";
                 } else {
                     if (isset($type) && $type === AudioTrack::$ALBUM) {
+                        // Cas d'un album
                         if (isset($titre_album) && isset($numero_album) && isset($annee)) {
                             if (!(filter_var($numero_album, FILTER_SANITIZE_NUMBER_INT) &&
                                 filter_var($titre_album, FILTER_SANITIZE_SPECIAL_CHARS) &&
@@ -91,6 +92,7 @@ class AddTrackAction extends ActionConnecte {
                         } else
                             $html = "<b>Erreur de saisie, veuillez réessayer</b>";
                     } else {
+                        // Cas d'un podcast
                         if (isset($date_podcast)) {
                             if (!filter_var($date_podcast, FILTER_SANITIZE_SPECIAL_CHARS)) {
                                 $html = "<b>Erreur de saisie, veuillez réessayer</b>";
