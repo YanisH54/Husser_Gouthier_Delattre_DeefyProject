@@ -74,12 +74,12 @@ class AddTrackAction extends ActionConnecte {
                     filter_var($genre, FILTER_SANITIZE_SPECIAL_CHARS))) {
                     $html = "<b>Erreur de saisie, veuillez réessayer</b>";
                 } else {
-                    if (isset($type) && $type === AudioTrack::$ALBUM) {
+                    if (isset($type) && $type === "Album" ){
                         // Cas d'un album
                         if (isset($titre_album) && isset($numero_album) && isset($annee)) {
                             if (!(filter_var($numero_album, FILTER_SANITIZE_NUMBER_INT) &&
                                 filter_var($titre_album, FILTER_SANITIZE_SPECIAL_CHARS) &&
-                                filter_var($date_podcast, FILTER_SANITIZE_SPECIAL_CHARS))) {
+                                filter_var($annee, FILTER_SANITIZE_NUMBER_INT))) {
                                 $html = "<b>Erreur de saisie, veuillez réessayer</b>";
                             } else {
                                 $albumtrack = new AlbumTrack($titre, $filename, $artiste, $duree, $titre_album, $numero_album, $genre, $annee);
