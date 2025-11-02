@@ -98,7 +98,7 @@ class AddTrackAction extends ActionConnecte {
                                 $html = "<b>Erreur de saisie, veuillez réessayer</b>";
                             } else {
                                 $dateSplit = explode("-", $date_podcast);
-                                if (sizeof($dateSplit) !== 3 && !checkdate($dateSplit[1], $dateSplit[2], $dateSplit[0]))
+                                if (sizeof($dateSplit) !== 3 || !checkdate($dateSplit[1], $dateSplit[2], $dateSplit[0]))
                                     $html = "<b>Format de date incorrect</b>";
                                 else {
                                     $podcasttrack = new PodcastTrack($titre, $filename, $artiste, $duree, $genre, $date_podcast);
