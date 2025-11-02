@@ -131,10 +131,16 @@ class DeefyRepository
      * @return void
      */
     public function savePisteExistante(int $idPlaylist, int $idAudioList) : void{
-        $requete = "INSERT INTO playlist2track (id_pl,id_track) VALUES (?, ?)";
+        $requete = "SELECT count(*) FROM playlist2track WHERE id_pl = ?;";
+        $statm = $this->pdo->prepare($requete);
+        $statm->bindParam(1,$idPlaylist);
+        $statm->execute();
+        $n = $statm->fetch()[0] + 1;
+        $requete = "INSERT INTO playlist2track (id_pl,id_track,no_piste_dans_liste) VALUES (?, ?, ?)";
         $statm = $this->pdo->prepare($requete);
         $statm->bindParam(1,$idPlaylist);
         $statm->bindParam(2,$idAudioList);
+        $statm->bindParam(3, $n);
         $statm->execute();
     }
 
@@ -144,7 +150,7 @@ class DeefyRepository
      * @param int $idPlaylist
      * @return void
      */
-    public function saveUserPlaylist(string $email,int $idPlaylist){
+    public function saveUserPlaylist(string $email,int $idPlaylist) : void{
         $idUser = $this->getUserInfo($email)[2];
         $requete = "INSERT INTO user2playlist VALUES (?, ?)";
         $statm = $this->pdo->prepare($requete);
@@ -178,7 +184,7 @@ class DeefyRepository
         $statm->bindParam(1, $email);
         $statm->execute();
         $nbr = $statm->fetch()[0];
-        return ($nbr !== 0);
+        return ((int)$nbr !== 0);
     }
 
     /**
@@ -243,7 +249,7 @@ class DeefyRepository
         $statm->bindParam(2,$idplaylist);
         $statm->execute();
         $n = $statm->fetch()[0];
-        return ($n === 1);
+        return ((int)$n === 1);
     }
 
     /**
@@ -253,7 +259,7 @@ class DeefyRepository
      * @return void
      */
     public function registerNewUser(string $email,string $passwd) : void {
-        $requete = "INSERT INTO User (email, passwd, role) values (?, ?, 1);";
+        $requete = "INSERT INTO user (email, passwd, role) values (?, ?, 1);";
         $statm = $this->pdo->prepare($requete);
         $statm->bindParam(1,$email);
         $statm->bindParam(2,$passwd);

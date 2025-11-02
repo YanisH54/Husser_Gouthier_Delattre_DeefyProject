@@ -8,14 +8,13 @@ use iutnc\deefy\repository\DeefyRepository;
 class Authz{
 
     public static function checkRole(int $n) : bool {
-
         $pdo = DeefyRepository::getInstance();
         $user = unserialize($_SESSION['user']);
         if (!$user){
             throw new AuthException("Erreur : Aucun user connecté");
         }
         $role = $pdo->getUserInfo($user)[1];
-        return ($n === $role);
+        return ($n === (int) $role);
     }
 
     public static function checkPlaylistCurrOwner(int $idPlaylist) : bool{
