@@ -13,10 +13,6 @@ class AlbumTrack extends AudioTrack {
         $this->annee = $annee;
     }
 
-    public function getType(): string
-    {
-        return parent::$ALBUM;
-    }
 
 
 }

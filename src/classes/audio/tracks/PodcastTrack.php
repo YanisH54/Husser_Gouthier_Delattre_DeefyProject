@@ -13,8 +13,4 @@ class PodcastTrack extends AudioTrack {
         $this->date = $date;
     }
 
-    public function getType(): string
-    {
-        return parent::$PODCAST;
-    }
 }

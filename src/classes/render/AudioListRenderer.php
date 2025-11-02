@@ -19,13 +19,14 @@ class AudioListRenderer implements Renderer
     {
         $affichage = "<p>Nom playlist :".$this->al->__GET('nom')."</p>";
         foreach ($this->al->__GET("tabPistes") as $audioTrack){
+            $affichage.= "<hr>";
             if ($audioTrack instanceof AlbumTrack)
                 $renderer = new AlbumTrackRenderer($audioTrack);
             else
                 $renderer = new PodcastTrackRenderer($audioTrack);
             $affichage .= $renderer->render(self::COMPACT);
         }
-        $affichage .= "<p>Nombre de piste : ".$this->al->__GET("nbrPistes")."</p>";
+        $affichage .= "<hr><p>Nombre de piste : ".$this->al->__GET("nbrPistes")."</p>";
         $affichage .= "<p>Durée totale : ".$this->al->__GET("dureeTotale")."</p>";
         return $affichage;
     }

@@ -31,7 +31,7 @@ class AddTrackAction extends ActionConnecte {
                     <p>Titre album <input type='text' name='titre_album'></p>
                     <p>Annee de sortie de l'album <input type='text' name='annee'></p>
                     <br>
-                    <p>Date du podcast <input type='text' name='date_podcast'></p>
+                    <p>Date du podcast (YYYY-MM-DD) <input type='text' name='date_podcast'></p>
                     <br>
                     <p>Créer un album <input type="radio" id="ALBUM" name="type" value="Album" checked></p>
                     <p>Créer un podcast <input type="radio" id="PODCAST" name="type" value="Podcast"></p>
@@ -97,14 +97,18 @@ class AddTrackAction extends ActionConnecte {
                             if (!filter_var($date_podcast, FILTER_SANITIZE_SPECIAL_CHARS)) {
                                 $html = "<b>Erreur de saisie, veuillez réessayer</b>";
                             } else {
-                                $podcasttrack = new PodcastTrack($titre, $filename, $artiste, $duree, $genre, $date_podcast);
-                                $pdo->sauvegarderNouvellePiste($podcasttrack);
-                                $pdo->savePisteExistante($playlist->__GET("id"), $podcasttrack->__GET("id"));
-                                $playlist->ajouterPiste($podcasttrack);
-                                $_SESSION['playlist'] = serialize($playlist);
+                                $dateSplit = explode("-", $date_podcast);
+                                if (sizeof($dateSplit) !== 3 && !checkdate($dateSplit[1], $dateSplit[2], $dateSplit[0]))
+                                    $html = "<b>Format de date incorrect</b>";
+                                else {
+                                    $podcasttrack = new PodcastTrack($titre, $filename, $artiste, $duree, $genre, $date_podcast);
+                                    $pdo->sauvegarderNouvellePiste($podcasttrack);
+                                    $pdo->savePisteExistante($playlist->__GET("id"), $podcasttrack->__GET("id"));
+                                    $playlist->ajouterPiste($podcasttrack);
+                                    $_SESSION['playlist'] = serialize($playlist);
 
                                 $html = "<b>PodcastTrack ajouté à la playlist</b>";
-
+                                }
                             }
                         } else
                             $html = "<b>Erreur de saisie, veuillez réessayer</b>";
