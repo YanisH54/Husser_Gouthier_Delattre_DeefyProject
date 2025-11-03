@@ -28,6 +28,7 @@ class AddUserAction extends Action
 
             $html ="<b>" .$e->getMessage() . "</b>";
             $html .= <<<END
+                 <b>Inscription</b>
                     <form method='post' action=?action=add-user>
                     Email : <input type='text' name='email'><br>
                     Mot de passe : <input type='text' name='password'><br>

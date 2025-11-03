@@ -28,6 +28,7 @@ class SignInAction extends Action
         } catch (AuthException $e){
             $html = "<b>" .$e->getMessage() . "</b>";
             $html .= <<<END
+                <b>Connexion</b>
                 <form method='post' action=?action=sign-in>
                 Email : <input type='text' name='email'><br>
                 Mot de passe : <input type='text' name='password'><br>
