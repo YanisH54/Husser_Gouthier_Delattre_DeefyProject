@@ -95,10 +95,11 @@ class DeefyRepository
             // Cas d'ajout d'une piste d'album
             $album = $track->__GET("album");
             $annee = $track->__GET("annee");
-            $numPiste = $track->__GET("annee");
+            $numPiste = $track->__GET("numPiste");
             $statm = $this->pdo->prepare("INSERT INTO track (titre,filename,duree,genre,artiste_album,titre_album,annee_album,numero_album,type) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?);");
-            $statm->bindParam(5, $album);
-            $statm->bindParam(6, $auteur);
+
+            $statm->bindParam(5, $auteur);
+            $statm->bindParam(6, $album);
             $statm->bindParam(7, $annee);
             $statm->bindParam(8, $numPiste);
             $type = "A";
